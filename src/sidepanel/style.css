@@ -1,0 +1,242 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  background: #fff;
+  color: #24292f;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #d0d7de;
+  background: #f6f8fa;
+  flex-shrink: 0;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.token-count {
+  font-size: 12px;
+  color: #57606a;
+  background: #ddf4ff;
+  border: 1px solid #80ccff;
+  border-radius: 12px;
+  padding: 2px 8px;
+}
+
+/* States */
+.empty,
+.progress,
+.error {
+  padding: 16px 12px;
+  line-height: 1.5;
+}
+
+.error {
+  color: #cf222e;
+  background: #fff8c5;
+  border-left: 3px solid #cf222e;
+  margin: 8px;
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+
+.progress-bar {
+  height: 4px;
+  background: #d0d7de;
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #0969da;
+  transition: width 0.2s ease;
+}
+
+.progress-fill--indeterminate {
+  width: 40%;
+  animation: indeterminate 1.2s ease-in-out infinite;
+}
+
+@keyframes indeterminate {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #d0d7de;
+  flex-shrink: 0;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: #57606a;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+  color: #0969da;
+  border-bottom-color: #0969da;
+  font-weight: 500;
+}
+
+.tab-btn:hover:not(.active) {
+  background: #f6f8fa;
+}
+
+/* Human view */
+.human-view {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 12px;
+  border-bottom: 1px solid #f6f8fa;
+}
+
+.stat-label {
+  color: #57606a;
+}
+
+.stat-value {
+  font-weight: 500;
+}
+
+.file-section {
+  border-top: 1px solid #f6f8fa;
+}
+
+.file-section-summary {
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: 500;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.file-section-summary::-webkit-details-marker { display: none; }
+
+.file-section-summary::before {
+  content: "▶";
+  font-size: 9px;
+  color: #57606a;
+  transition: transform 0.15s;
+}
+
+details[open] .file-section-summary::before {
+  transform: rotate(90deg);
+}
+
+.file-section-count {
+  color: #57606a;
+  font-weight: 400;
+}
+
+.file-list {
+  padding: 4px 0;
+}
+
+.file-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 12px;
+  gap: 8px;
+}
+
+.file-row:hover {
+  background: #f6f8fa;
+}
+
+.file-path {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.file-size {
+  font-size: 11px;
+  color: #57606a;
+  flex-shrink: 0;
+}
+
+.file-list--dimmed .file-path,
+.file-list--dimmed .file-size {
+  color: #8c959f;
+}
+
+/* LLM view */
+.llm-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  padding: 8px;
+  gap: 8px;
+}
+
+.copy-btn {
+  padding: 6px 16px;
+  background: #0969da;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.copy-btn:hover {
+  background: #0860ca;
+}
+
+.cxml-area {
+  flex: 1;
+  resize: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 8px;
+  color: #24292f;
+  background: #f6f8fa;
+  outline: none;
+}

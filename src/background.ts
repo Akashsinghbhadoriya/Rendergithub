@@ -1,8 +1,8 @@
 // Background service worker
-// Orchestrates: download ZIP → parse → filter → generate CXML
-// Sends STATUS_UPDATE messages to the side panel
+// Orchestrates: download ZIP → parse → filter → score → ready_for_selection
+// CXML generation happens in the panel after user selects files.
 
-import { generateCXML } from "./lib/cxml-generator"
+import { scoreFiles } from "./lib/priority-scorer"
 import { fetchRepoAsZip } from "./lib/zip-fetcher"
 import type { Message, ExportStatus } from "./types"
 
@@ -62,17 +62,21 @@ async function runExport(owner: string, repo: string) {
       repo,
       token,
       (msg) => {
-        // Map progress messages to status updates for the side panel
         if (msg.startsWith("Downloading") || msg.startsWith("Parsing")) {
           broadcast({ type: "fetching_files", done: 0, total: 0 })
         }
       }
     )
 
-    // Build CXML — same output format as rendergit.py generate_cxml_text()
-    const cxml = generateCXML(files)
+    // Score files by heuristic priority — panel uses this for Smart Pack display
+    const scoredFiles = scoreFiles(files)
 
-    broadcast({ type: "done", stats, cxml })
+    broadcast({
+      type: "ready_for_selection",
+      files: scoredFiles,
+      skippedBinary: stats.skippedBinary,
+      skippedLarge: stats.skippedLarge,
+    })
   } catch (err) {
     broadcast({ type: "error", message: (err as Error).message })
   }

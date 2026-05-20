@@ -10,6 +10,14 @@ export interface FileInfo {
   content?: string
 }
 
+// A file that has been filtered, scored, and is ready for user selection
+export interface SelectableFile {
+  path: string
+  size: number
+  content: string
+  priorityScore: number  // 0–100, higher = more relevant for LLM context
+}
+
 export interface RepoStats {
   included: FileInfo[]
   skippedBinary: FileInfo[]
@@ -21,7 +29,7 @@ export type ExportStatus =
   | { type: "idle" }
   | { type: "fetching_tree" }
   | { type: "fetching_files"; done: number; total: number }
-  | { type: "done"; stats: RepoStats; cxml: string }
+  | { type: "ready_for_selection"; files: SelectableFile[]; skippedBinary: FileInfo[]; skippedLarge: FileInfo[] }
   | { type: "error"; message: string }
 
 // Messages between content script / popup and background

@@ -19,7 +19,7 @@ export async function fetchRepoAsZip(
   repo: string,
   token?: string,
   onProgress?: (msg: string) => void
-): Promise<{ stats: RepoStats; files: Array<{ path: string; content: string }> }> {
+): Promise<{ stats: RepoStats; files: Array<{ path: string; size: number; content: string }> }> {
   // 1 API call: get default branch
   onProgress?.("Fetching repo info...")
   const metaRes = await fetch(`${BASE}/repos/${owner}/${repo}`, {
@@ -57,7 +57,7 @@ export async function fetchRepoAsZip(
   const included: FileInfo[] = []
   const skippedBinary: FileInfo[] = []
   const skippedLarge: FileInfo[] = []
-  const resultFiles: Array<{ path: string; content: string }> = []
+  const resultFiles: Array<{ path: string; size: number; content: string }> = []
 
   for (const [zipPath, bytes] of Object.entries(unzipped)) {
     // Strip top-level prefix
@@ -75,7 +75,7 @@ export async function fetchRepoAsZip(
       included.push(info)
       // Decode as UTF-8 (same as rendergit.py read_text with errors="replace")
       const content = new TextDecoder("utf-8", { fatal: false }).decode(bytes)
-      resultFiles.push({ path: rel, content })
+      resultFiles.push({ path: rel, size: bytes.length, content })
     }
   }
 
